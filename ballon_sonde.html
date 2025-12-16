@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TP_2_Partie_1 : Le_scrypt_python.</title>
+  <style>
+    :root{--bg:#0b1220;--card:#0f1724;--accent:#6ee7b7;--muted:#9aa7b3}
+    body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background: linear-gradient(180deg, #052e16 0%, #021f0f 100%);
+ color:#e6eef6}
+ .wrap{
+ max-width:900px;
+ margin:48px auto;
+ padding:28px;
+ background: linear-gradient(
+   180deg,
+   #020617 0%,
+   #000000 85%,
+   rgba(255,255,255,0.02) 100%
+ );
+ border-radius:12px;
+ box-shadow:0 8px 30px rgba(0,0,0,0.8);
+}
+
+    p.lead{margin:0 0 18px;color:var(--muted)}
+    .card{background:var(--card);padding:18px;border-radius:10px}
+    pre{margin:0;overflow:auto;border-radius:8px;background:#071126;padding:16px}
+    code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Helvetica Neue", monospace;font-size:14px;line-height:1.5;color:#dbeafe;display:block}
+    .toolbar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:10px}
+    button{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 10px;border-radius:8px;cursor:pointer}
+    button:hover{border-color:rgba(255,255,255,0.12);color:var(--accent)}
+    .meta{font-size:13px;color:var(--muted);margin-top:10px}
+    .notice{margin-top:12px;padding:10px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.02);color:var(--muted)}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Le script Python</h1>
+    <p class="lead">Dans ce TP nous étudirons les données recue d' un ballon sonde enregistrer dans un fichier .CSV.</p>
+
+    <section class="card">
+      <div class="toolbar">
+        <button id="copyBtn" title="Copier le code">Copier</button>
+        <button id="downloadBtn" title="Télécharger le fichier .py">Télécharger (.py)</button>
+      </div>
+
+      <pre><code id="codeBlock"># question libre : étude des données d' un ballon sonde !
+
+      <pre><code class="language-python">
+        <pre><code class="language-python">
+          # question libre : étude des données d' un ballon sonde !
+
+# question libre : étude des données d'un ballon sonde !
+
+import csv
+import matplotlib.pyplot as plt
+data = []
+with open("Donnees.csv", newline='') as csvfile:
+    reader = csv.reader(csvfile, delimiter=';')
+    for row in reader:
+        data.append(row)
+
+# Supprimer la première ligne (en-têtes)
+del(data[0])
+
+# --- Altitude ---
+alt = []
+maxalt = 0
+minalt = 1000000
+for i in range(len(data)):
+    alt.append(float(data[i][3]))
+    if alt[i] > maxalt:
+        maxalt = alt[i]
+    if alt[i] < minalt:
+        minalt = alt[i]
+
+print("L'altitude maximale mesurée est ", maxalt)
+print("L'altitude minimale mesurée est ", minalt)
+
+# --- Température extérieure ---
+tempext = []
+maxext = 0
+minext = 1000000
+for i in range(len(data)):
+    tempext.append(float(data[i][6]))
+    if tempext[i] > maxext:
+        maxext = tempext[i]
+    if tempext[i] < minext:
+        minext = tempext[i]
+
+print("La température extérieure maximale mesurée est ", maxext)
+print("La température extérieure minimale mesurée est ", minext)
+
+# --- Température intérieure ---
+tempint = []
+maxint = 0
+minint = 1000000
+for i in range(len(data)):
+    tempint.append(float(data[i][5]))
+    if tempint[i] > maxint:
+        maxint = tempint[i]
+    if tempint[i] < minint:
+        minint = tempint[i]
+
+print("La température intérieure maximale mesurée est ", maxint)
+print("La température intérieure minimale mesurée est ", minint)
+
+# --- Graphiques ---
+plt.scatter(alt, tempext, s=4, c='b')
+plt.xlabel("Altitude")
+plt.ylabel("Température extérieure")
+plt.title("Température extérieure en fonction de l'altitude")
+plt.grid()
+plt.show()
+
+plt.scatter(alt, tempint, s=4, c='g')
+plt.xlabel("Altitude")
+plt.ylabel("Température intérieure")
+plt.title("Température intérieure en fonction de l'altitude")
+plt.grid()
+plt.show()
+</code></pre>
+
+
+    </section>
+      <div class="meta">Langage : <strong>Python 3</strong> — Fichier : <strong>scrypt_température.py</strong></div>
+      <div class="meta"><strong>L’étude porte sur plusieurs paramètres : La température intérieur du ballon. Ca température exterieur ainsi que son altitude.</strong></div>
+      <div class="notice">Astuce : pour exécuter ce script sur ta machine, sauvegarde-le en <code>scrypt_température.py</code> puis lance <code>python scrypt_température.py</code> dans un terminal (ou <code>python3</code> selon ta configuration).</div>
+    </section>
+
+    <p style="margin-top:18px;color:var(--muted);font-size:13px">MARESIA Enzo FATET Gaetan HOUNTONDJI Lionel.</p>
+  </section>
+
+  <script>
+    const code = document.getElementById('codeBlock').innerText;
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(code);
+        alert('Code copié dans le presse-papiers');
+      } catch (e) {
+        alert('Impossible de copier : ' + e.message);
+      }
+    });
+
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      const blob = new Blob([code], {type: 'text/x-python'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'code_évolution_pop.py';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
